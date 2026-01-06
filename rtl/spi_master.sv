@@ -37,6 +37,10 @@ module spi_master #(
                 toggle_counter <= 0;               
             end else
                 toggle_counter <= toggle_counter + 1;
+        end else begin // in other states
+            spi_sck_toggle <= 0;
+            spi_sck_toggle_prev <= 0;
+            toggle_counter <= 0;
         end
     end
 
@@ -65,7 +69,7 @@ module spi_master #(
                     next_state = IDLE;
             end
             TRANSFER: begin
-                if (bit_count == DATA_LENGTH && spi_sck_falling) // data sampled on falling edge
+                if (bit_count == DATA_LENGTH)
                     next_state = DONE;
                 else
                     next_state = TRANSFER;
@@ -92,25 +96,30 @@ module spi_master #(
             case(curr_state)
                 IDLE: begin
                     busy      <= 0;
+                    done      <= 0;                     
                     spi_sck   <= 0;
                     spi_cs_n  <= 1; // chip select is disabled
                     spi_mosi  <='0;
-                    bit_count <='0;                   
-                    if (start)
+                    bit_count <='0;            
+                    if (start) begin
                         shift_reg_tx <= data_in; // take data in
+                        spi_mosi <= data_in[DATA_LENGTH-1]; 
+                        // SPI protocol specifies that the first data bit must be present on MOSI 
+                        // before the first rising edge of SCK
+                    end
                 end
                 TRANSFER: begin
                     busy <= 1; // master is busy
                     spi_sck <= spi_sck_toggle;
                     spi_cs_n <= 0; // chip select is pulled down
-                    // send data to slave over mosi on rising edge
-                    if (spi_sck_rising) begin
+                    // shift data to slave over mosi on falling edge
+                    if (spi_sck_falling) begin
                         spi_mosi <= shift_reg_tx[DATA_LENGTH-1]; //MSB-first
                         shift_reg_tx <= {shift_reg_tx[DATA_LENGTH-2:0], 1'b0}; // shift left
                         bit_count <= bit_count + 1;
                     end
-                    // sample data from slave on falling edge            
-                    if (spi_sck_falling) begin
+                    // sample data from slave on rising edge            
+                    if (spi_sck_rising) begin
                         shift_reg_rx <= {shift_reg_rx[DATA_LENGTH-2:0], spi_miso}; // MSB-first
                     end
                 end
