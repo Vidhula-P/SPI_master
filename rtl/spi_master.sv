@@ -130,7 +130,7 @@ module spi_master #(
         if(!rst_n)
             data_out <= '0;
         else begin
-            if (curr_state == DONE) // sample after DONE
+            if (done) // sample after DONE
                 data_out <= shift_reg_rx;
         end
     end
