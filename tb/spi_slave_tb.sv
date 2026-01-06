@@ -33,11 +33,32 @@ module spi_slave_tb;
         $dumpvars(0, spi_slave_tb);
         rst_n = 1;
         start = 0;
+        spi_miso = 0;
         #1; rst_n = 0;
         #3; rst_n = 1;
         @(posedge clk); #2; // avoid race
         start = 1;
-        data_in = 8'hAA; // master should send "1010_1010" to slave
+        data_in = 8'hAA; // master should send "AA" to slave
+        // slave wants to send "66" to master/outside world
+        wait(!spi_cs_n);
+        if (!spi_cs_n) begin
+            @(posedge spi_sck);
+            spi_miso = 0;
+            @(posedge spi_sck);
+            spi_miso = 1;
+            @(posedge spi_sck);
+            spi_miso = 1; 
+            @(posedge spi_sck);
+            spi_miso = 0; 
+            @(posedge spi_sck);
+            spi_miso = 0;
+            @(posedge spi_sck);
+            spi_miso = 1;
+            @(posedge spi_sck);
+            spi_miso = 1; 
+            @(posedge spi_sck);
+            spi_miso = 0; 
+        end
         repeat (200) begin
             @(posedge clk);
             if (done)
