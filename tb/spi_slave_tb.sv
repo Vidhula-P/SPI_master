@@ -1,3 +1,14 @@
+// my simulator does not support parameterized class so I'm fixing data length as 8 bits
+class spi_transaction;
+    bit [7:0] tx_data; // data from outside world to send to slave
+    bit [7:0] rx_data; // data from slave to outside world
+
+    function new(bit [7:0] tx_data = 8'h00, bit [7:0] rx_data = 8'h00);
+        this.tx_data = tx_data;
+        this.rx_data = rx_data;
+    endfunction
+endclass
+
 module spi_slave_tb;
     parameter DATA_LENGTH = 8;
     parameter CLK_DIV = 4;
@@ -13,6 +24,9 @@ module spi_slave_tb;
     logic spi_mosi;
     logic spi_miso;
 
+    bit [7:0] data_out_tb;
+    spi_transaction spi_obj;
+
     spi_master #(.DATA_LENGTH(DATA_LENGTH), .CLK_DIV(CLK_DIV)) s1( .clk(clk), 
     .rst_n(rst_n),
     .data_in(data_in),
@@ -27,10 +41,14 @@ module spi_slave_tb;
 
     initial clk = 0;
     always #5 clk = ~clk;
+    int i;
 
     initial begin
         $dumpfile("spi_slave_tb.vcd");
         $dumpvars(0, spi_slave_tb);
+        spi_obj = new();
+        spi_obj.tx_data = 8'hAA;
+        spi_obj.rx_data = 8'h66;
         rst_n = 1;
         start = 0;
         spi_miso = 0;
@@ -38,31 +56,24 @@ module spi_slave_tb;
         #3; rst_n = 1;
         @(posedge clk); #2; // avoid race
         start = 1;
-        data_in = 8'hAA; // master should send "AA" to slave
+        data_in = spi_obj.tx_data; // master should send "AA" to slave
+        $display("Sending to slave: %b", data_in);
         // slave wants to send "66" to master/outside world
-        wait(!spi_cs_n);
+        data_out_tb = spi_obj.rx_data;
+        wait(!spi_cs_n); start = 0;
         if (!spi_cs_n) begin
-            @(posedge spi_sck);
-            spi_miso = 0;
-            @(posedge spi_sck);
-            spi_miso = 1;
-            @(posedge spi_sck);
-            spi_miso = 1; 
-            @(posedge spi_sck);
-            spi_miso = 0; 
-            @(posedge spi_sck);
-            spi_miso = 0;
-            @(posedge spi_sck);
-            spi_miso = 1;
-            @(posedge spi_sck);
-            spi_miso = 1; 
-            @(posedge spi_sck);
-            spi_miso = 0; 
+            for(i=7; i>=0; i--) begin
+                @(posedge spi_sck);
+                spi_miso = data_out_tb[i];
+                $display("Sending out data_out_tb[%d] = %b", i, spi_miso);
+            end
         end
         repeat (200) begin
             @(posedge clk);
-            if (done)
+            if (done) begin
+                @(posedge clk)
                 $finish;
+            end
         end
         $finish;
     end
