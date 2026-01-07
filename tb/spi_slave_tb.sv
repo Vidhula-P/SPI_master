@@ -1,7 +1,6 @@
-// my simulator does not support parameterized class so I'm fixing data length as 8 bits
-class spi_transaction;
-    bit [7:0] tx_data; // data from outside world to send to slave
-    bit [7:0] rx_data; // data from slave to outside world
+class spi_transaction #(int DATA_LENGTH = 8);
+    bit [DATA_LENGTH-1:0] tx_data; // data from outside world to send to slave
+    bit [DATA_LENGTH-1:0] rx_data; // data from slave to outside world
 
     function new(bit [7:0] tx_data = 8'h00, bit [7:0] rx_data = 8'h00);
         this.tx_data = tx_data;
@@ -25,7 +24,7 @@ module spi_slave_tb;
     logic spi_miso;
 
     bit [7:0] data_out_tb;
-    spi_transaction spi_obj;
+    spi_transaction #(8) spi_obj;
 
     spi_master #(.DATA_LENGTH(DATA_LENGTH), .CLK_DIV(CLK_DIV)) s1( .clk(clk), 
     .rst_n(rst_n),
