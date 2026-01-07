@@ -19,6 +19,10 @@ run:
 run_gui:
 	$(SIM) -svseed random $(RTL_SRC) $(TB_SRC) -gui -access rwc
 
+# Run with covergae
+run_cover:
+	$(SIM) -svseed random -coverage functional $(RTL_SRC) $(TB_SRC)
+
 # Clean simulator files
 clean:
 	rm -rf xcelium.d xrun.*

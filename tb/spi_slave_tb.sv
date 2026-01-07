@@ -40,9 +40,16 @@ module spi_slave_tb;
     always #5 clk = ~clk;
     int i;
 
+	// "cg" is a covergroup
+	covergroup cg @ (posedge clk);
+		coverpoint spi_mosi;
+		coverpoint spi_miso;
+	endgroup
+
+	cg  cg_inst;
+
     initial begin
-    	$dumpfile("spi_slave_tb.vcd");
-    	$dumpvars(0, spi_slave_tb);
+		cg_inst= new();
 
     	rst_n = 1;
     	start = 0;
@@ -78,6 +85,7 @@ module spi_slave_tb;
         	wait(done);
         	@(posedge clk); // optional delay before next transaction
     	end
+		$display ("Coverage = %0.2f %%", cg_inst.get_inst_coverage());
     	$finish;
 	end
 endmodule
