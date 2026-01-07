@@ -1,6 +1,6 @@
 class spi_transaction #(int DATA_LENGTH = 8);
     rand bit [DATA_LENGTH-1:0] tx_data; // data from outside world to send to slave
-    rand bit [DATA_LENGTH-1:0] rx_data; // data from slave to outside world
+	rand bit [DATA_LENGTH-1:0] rx_data; // data from slave to outside world
 
 	constraint tx_no_zero {tx_data != 8'h00;}
 	constraint rx_no_zero {rx_data != 8'h00;}
@@ -41,36 +41,43 @@ module spi_slave_tb;
     int i;
 
     initial begin
-        $dumpfile("spi_slave_tb.vcd");
-        $dumpvars(0, spi_slave_tb);
-        spi_obj = new();
-        assert(spi_obj.randomize());
-        rst_n = 1;
-        start = 0;
-        spi_miso = 0;
-        #1; rst_n = 0;
-        #3; rst_n = 1;
-        @(posedge clk); #2; // avoid race
-        start = 1;
-        data_in = spi_obj.tx_data; // master should send "AA" to slave
-        $display("Sending to slave: %b", data_in);
-        // slave wants to send "66" to master/outside world
-        data_out_tb = spi_obj.rx_data;
-        wait(!spi_cs_n); start = 0;
-        if (!spi_cs_n) begin
-            for(i=7; i>=0; i--) begin
-                @(posedge spi_sck);
-                spi_miso = data_out_tb[i];
-                $display("Sending out data_out_tb[%d] = %b", i, spi_miso);
-            end
-        end
-        repeat (200) begin
-            @(posedge clk);
-            if (done) begin
-                @(posedge clk)
-                $finish;
-            end
-        end
-        $finish;
-    end
+    	$dumpfile("spi_slave_tb.vcd");
+    	$dumpvars(0, spi_slave_tb);
+
+    	rst_n = 1;
+    	start = 0;
+    	spi_miso = 0;
+
+    	#1; rst_n = 0;
+    	#3; rst_n = 1;
+    	@(posedge clk); #2; // avoid race
+
+    	// Generate 5 random transactions
+    	for (int t = 0; t < 5; t++) begin
+        	spi_obj = new();
+        	assert(spi_obj.randomize());
+
+        	data_in = spi_obj.tx_data;
+        	data_out_tb = spi_obj.rx_data;
+
+        	$display("Transaction %0d: Sending to slave: %0h, Slave sends: %0h", t+1, data_in, data_out_tb);
+
+        	// Generate single-cycle start pulse
+        	@(posedge clk);
+        	start = 1;
+        	@(posedge clk);
+        	start = 0;
+
+        	// Send MISO bits from slave
+        	for (int i = DATA_LENGTH-1; i >= 0; i--) begin
+            	@(posedge spi_sck);
+            	spi_miso = data_out_tb[i];
+        	end
+
+        	// Wait for master to finish transaction
+        	wait(done);
+        	@(posedge clk); // optional delay before next transaction
+    	end
+    	$finish;
+	end
 endmodule
