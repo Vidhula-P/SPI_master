@@ -1,15 +1,26 @@
-TOP = spi_slave_tb
-OUT = spi_slave_tb.vvp
+# Makefile for Xcelium SPI testbench
 
-SRCS = \
-  ../rtl/spi_master.sv \
-  ../tb/spi_slave_tb.sv
+# Simulator
+SIM = xrun
 
-$(OUT): $(SRCS)
-	iverilog -g2012 -o $(OUT) $(SRCS)
+# Source files
+RTL_SRC = ../rtl/spi_master.sv
+TB_SRC  = ../tb/spi_slave_tb.sv
+TOP     = spi_slave_tb
 
-run: $(OUT)
-	vvp $(OUT)
+# Default target
+all: run
 
+# Default run without GUI
+run:
+	$(SIM) -svseed random $(RTL_SRC) $(TB_SRC)
+
+# GUI run with full access
+run_gui:
+	$(SIM) -svseed random $(RTL_SRC) $(TB_SRC) -gui -access rwc
+
+# Clean simulator files
 clean:
-	rm -f $(OUT)
+	rm -rf xcelium.d xrun.*
+
+.PHONY: all run run_gui clean
