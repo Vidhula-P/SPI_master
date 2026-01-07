@@ -20,11 +20,19 @@ module spi_master #(
     output logic spi_mosi,
     input  logic spi_miso
 );
-
-    // SPI clock generation
+	// SPI clock signals
     logic [$clog2(CLK_DIV)-1:0] toggle_counter;
     logic spi_sck_toggle;
     logic spi_sck_toggle_prev;
+    logic spi_sck_rising, spi_sck_falling;
+	// State variables
+    state_t curr_state, next_state;
+    logic [$clog2(DATA_LENGTH):0] bit_count; // one extra bit since data is sample on falling edge
+	// Shift registers
+    logic [DATA_LENGTH-1:0] shift_reg_tx; // holds data to be transmitted to slave
+    logic [DATA_LENGTH-1:0] shift_reg_rx; // holds data from slave
+
+    // SPI clock generation
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             spi_sck_toggle <= 0;
@@ -45,12 +53,10 @@ module spi_master #(
     end
 
     // Detect edges
-    logic spi_sck_rising, spi_sck_falling;
     assign spi_sck_rising =   spi_sck_toggle && !spi_sck_toggle_prev;
     assign spi_sck_falling = !spi_sck_toggle &&  spi_sck_toggle_prev;
 
     // State update
-    state_t curr_state, next_state;
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n)
             curr_state <= IDLE;
@@ -59,7 +65,6 @@ module spi_master #(
     end
 
     // Next state logic
-    logic [$clog2(DATA_LENGTH):0] bit_count; // one extra bit since data is sample on falling edge
     always_comb begin
         case(curr_state)
             IDLE: begin
@@ -80,8 +85,6 @@ module spi_master #(
     end
 
     // Output logic
-    logic [DATA_LENGTH-1:0] shift_reg_tx; // holds data to be transmitted to slave
-    logic [DATA_LENGTH-1:0] shift_reg_rx; // holds data from slave
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             busy         <= 0;
@@ -132,6 +135,7 @@ module spi_master #(
                     bit_count <='0;
                     done      <= 1;
                     data_out <= shift_reg_rx;// match shift register with peripheral
+										$strobe("data_in: %h, data_out: %h", data_in, data_out);
                 end
             endcase
         end 
