@@ -92,6 +92,7 @@ module spi_master #(
             bit_count    <='0;
             shift_reg_tx <='0;
             shift_reg_rx <='0;
+            data_out     <= '0;
         end else begin
             case(curr_state)
                 IDLE: begin
@@ -100,7 +101,8 @@ module spi_master #(
                     spi_sck   <= 0;
                     spi_cs_n  <= 1; // chip select is disabled
                     spi_mosi  <='0;
-                    bit_count <='0;            
+                    bit_count <='0;
+                    data_out  <= '0;         
                     if (start) begin
                         shift_reg_tx <= data_in; // take data in
                         spi_mosi <= data_in[DATA_LENGTH-1]; 
@@ -129,19 +131,10 @@ module spi_master #(
                     spi_mosi  <='0;
                     bit_count <='0;
                     done      <= 1;
+                    data_out <= shift_reg_rx;// match shift register with peripheral
                 end
             endcase
         end 
-    end
-
-    // match shift register with peripheral
-    always_ff @(posedge clk or negedge rst_n) begin
-        if(!rst_n)
-            data_out <= '0;
-        else begin
-            if (done) // sample after DONE
-                data_out <= shift_reg_rx;
-        end
     end
 
 endmodule
