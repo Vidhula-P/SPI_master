@@ -1,11 +1,9 @@
 class spi_transaction #(int DATA_LENGTH = 8);
-    bit [DATA_LENGTH-1:0] tx_data; // data from outside world to send to slave
-    bit [DATA_LENGTH-1:0] rx_data; // data from slave to outside world
+    rand bit [DATA_LENGTH-1:0] tx_data; // data from outside world to send to slave
+    rand bit [DATA_LENGTH-1:0] rx_data; // data from slave to outside world
 
-    function new(bit [7:0] tx_data = 8'h00, bit [7:0] rx_data = 8'h00);
-        this.tx_data = tx_data;
-        this.rx_data = rx_data;
-    endfunction
+	constraint tx_no_zero {tx_data != 8'h00;}
+	constraint rx_no_zero {rx_data != 8'h00;}
 endclass
 
 module spi_slave_tb;
@@ -46,8 +44,7 @@ module spi_slave_tb;
         $dumpfile("spi_slave_tb.vcd");
         $dumpvars(0, spi_slave_tb);
         spi_obj = new();
-        spi_obj.tx_data = 8'hAA;
-        spi_obj.rx_data = 8'h66;
+        assert(spi_obj.randomize());
         rst_n = 1;
         start = 0;
         spi_miso = 0;
