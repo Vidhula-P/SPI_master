@@ -26,6 +26,6 @@ run_cover:
 
 # Clean simulator files
 clean:
-	rm -rf xcelium.d xrun.* cov_work
+	rm -rf xcelium.d xrun.* cov_work waves.shm
 
 .PHONY: all run run_gui clean
