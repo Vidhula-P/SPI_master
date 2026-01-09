@@ -1,5 +1,5 @@
 class spi_transaction #(int DATA_LENGTH = 8);
-    rand bit [DATA_LENGTH-1:0] tx_data; // data from outside world to send to slave
+	rand bit [DATA_LENGTH-1:0] tx_data; // data from outside world to send to slave
 	rand bit [DATA_LENGTH-1:0] rx_data; // data from slave to outside world
 
 	constraint tx_no_zero {tx_data != 8'h00;}
@@ -11,15 +11,12 @@ module spi_slave_tb;
     parameter CLK_DIV = 4;
     logic clk;
     logic rst_n;
-    logic [DATA_LENGTH-1:0] data_in;  // data from outside world to send to slave
-    logic [DATA_LENGTH-1:0] data_out; // data from slave to outside world
+    logic [DATA_LENGTH-1:0] data_in;  // data from CPU
+    logic [DATA_LENGTH-1:0] data_out; // data to CPUS
     logic start;
     logic busy;
     logic done;
-    logic spi_sck;
-    logic spi_cs_n;
-    logic spi_mosi;
-    logic spi_miso;
+    spi_bus_if spiIF(); // instantiating the bus interface
 
     bit [7:0] data_out_tb;
     spi_transaction #(8) spi_obj;
@@ -31,10 +28,7 @@ module spi_slave_tb;
     .start(start),
     .busy(busy),
     .done(done),
-    .spi_sck(spi_sck),
-    .spi_cs_n(spi_cs_n),
-    .spi_mosi(spi_mosi),
-    .spi_miso(spi_miso) );
+    .spiIF(spiIF) );
 
     initial clk = 0;
     always #5 clk = ~clk;
@@ -42,8 +36,8 @@ module spi_slave_tb;
 
 	// "cg" is a covergroup
 	covergroup cg @ (posedge clk);
-		coverpoint spi_mosi;
-		coverpoint spi_miso;
+		coverpoint spiIF.spi_mosi;
+		coverpoint spiIF.spi_miso;
 	endgroup
 
 	cg  cg_inst;
@@ -53,7 +47,7 @@ module spi_slave_tb;
 
     	rst_n = 1;
     	start = 0;
-    	spi_miso = 0;
+    	spiIF.spi_miso = 0;
 
     	#1; rst_n = 0;
     	#3; rst_n = 1;
@@ -77,8 +71,8 @@ module spi_slave_tb;
 
         	// Send MISO bits from slave
         	for (int i = DATA_LENGTH-1; i >= 0; i--) begin
-            	@(posedge spi_sck);
-            	spi_miso = data_out_tb[i];
+            	@(posedge spiIF.spi_sck);
+            	spiIF.spi_miso = data_out_tb[i];
         	end
 
         	// Wait for master to finish transaction
