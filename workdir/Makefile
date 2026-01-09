@@ -6,7 +6,7 @@ SIM = xrun
 # Source files
 INF_SRC = ../uvm/spi_bus_if.sv
 RTL_SRC = ../rtl/spi_master.sv
-TB_SRC  = ../tb/spi_slave_tb.sv
+TB_SRC  = ../tb/spi_master_tb.sv
 TOP     = spi_slave_tb
 
 # Default target

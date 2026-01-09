@@ -1,0 +1,52 @@
+#e1(09Jan2026:15:17:49): source ./xcelium.d/env.d/env.history.09Jan2026_15_17_49
+s1(09Jan2026:15:17:49):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv -gui -access rwc 
+#e2(09Jan2026:15:22:12): source ./xcelium.d/env.d/env.history.09Jan2026_15_22_12
+s2(09Jan2026:15:22:12):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv 
+#e3(09Jan2026:15:22:22): source ./xcelium.d/env.d/env.history.09Jan2026_15_22_22
+s3(09Jan2026:15:22:22):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv -gui -access rwc 
+#e4(09Jan2026:15:22:50): source ./xcelium.d/env.d/env.history.09Jan2026_15_22_50
+s4(09Jan2026:15:22:50):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv -gui -access rwc 
+#e5(09Jan2026:15:27:50): source ./xcelium.d/env.d/env.history.09Jan2026_15_27_50
+s5(09Jan2026:15:27:50):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv -gui -access rwc 
+#e6(09Jan2026:15:28:10): source ./xcelium.d/env.d/env.history.09Jan2026_15_28_10
+s6(09Jan2026:15:28:10):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv 
+#e7(09Jan2026:15:28:25): source ./xcelium.d/env.d/env.history.09Jan2026_15_28_25
+s7(09Jan2026:15:28:25):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv -gui -access rwc 
+#e8(09Jan2026:15:33:46): source ./xcelium.d/env.d/env.history.09Jan2026_15_33_46
+s8(09Jan2026:15:33:46):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv -gui -access rwc 
+#e9(09Jan2026:15:37:11): source ./xcelium.d/env.d/env.history.09Jan2026_15_37_11
+s9(09Jan2026:15:37:11):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv 
+#e10(09Jan2026:15:37:25): source ./xcelium.d/env.d/env.history.09Jan2026_15_37_25
+s10(09Jan2026:15:37:25):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv -gui -access rwc 
+#e11(09Jan2026:15:58:12): source ./xcelium.d/env.d/env.history.09Jan2026_15_58_12
+s11(09Jan2026:15:58:12):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv 
+#e12(09Jan2026:16:01:59): source ./xcelium.d/env.d/env.history.09Jan2026_16_01_59
+s12(09Jan2026:16:01:59):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv 
+#e13(09Jan2026:16:02:25): source ./xcelium.d/env.d/env.history.09Jan2026_16_02_25
+s13(09Jan2026:16:02:25):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv 
+#e14(09Jan2026:16:03:23): source ./xcelium.d/env.d/env.history.09Jan2026_16_03_23
+s14(09Jan2026:16:03:23):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv 
+#e15(09Jan2026:16:05:10): source ./xcelium.d/env.d/env.history.09Jan2026_16_05_10
+s15(09Jan2026:16:05:10):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv 
+#e16(09Jan2026:16:05:39): source ./xcelium.d/env.d/env.history.09Jan2026_16_05_39
+s16(09Jan2026:16:05:39):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv -gui -access rwc 
+#e17(09Jan2026:16:10:19): source ./xcelium.d/env.d/env.history.09Jan2026_16_10_19
+s17(09Jan2026:16:10:19):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv 
+#e18(09Jan2026:16:10:26): source ./xcelium.d/env.d/env.history.09Jan2026_16_10_26
+s18(09Jan2026:16:10:26):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv -gui -access rwc 
+#e19(09Jan2026:16:15:14): source ./xcelium.d/env.d/env.history.09Jan2026_16_15_14
+s19(09Jan2026:16:15:14):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv -gui -access rwc 
+#e20(09Jan2026:16:16:58): source ./xcelium.d/env.d/env.history.09Jan2026_16_16_58
+s20(09Jan2026:16:16:58):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv 
+#e21(09Jan2026:16:19:02): source ./xcelium.d/env.d/env.history.09Jan2026_16_19_02
+s21(09Jan2026:16:19:02):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv 
+#e22(09Jan2026:16:19:24): source ./xcelium.d/env.d/env.history.09Jan2026_16_19_24
+s22(09Jan2026:16:19:24):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv 
+#e23(09Jan2026:16:20:14): source ./xcelium.d/env.d/env.history.09Jan2026_16_20_14
+s23(09Jan2026:16:20:14):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv 
+#e24(09Jan2026:16:21:16): source ./xcelium.d/env.d/env.history.09Jan2026_16_21_16
+s24(09Jan2026:16:21:16):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv 
+#e25(09Jan2026:16:21:45): source ./xcelium.d/env.d/env.history.09Jan2026_16_21_45
+s25(09Jan2026:16:21:45):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv 
+#e26(09Jan2026:16:22:14): source ./xcelium.d/env.d/env.history.09Jan2026_16_22_14
+s26(09Jan2026:16:22:14):  xrun -svseed random ../uvm/spi_bus_if.sv ../rtl/spi_master.sv ../tb/spi_master_tb.sv 
