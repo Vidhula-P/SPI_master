@@ -135,7 +135,7 @@ module spi_master #(
                     bit_count 		<='0;
                     done      		<= 1;
                     data_out 		<= shift_reg_rx;
-					$strobe("data_in: %h, data_out: %h", data_in, data_out);
+					$strobe("MASTER- CPU to master: %h, master to CPU: %h", data_in, data_out);
                 end
             endcase
         end 
