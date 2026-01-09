@@ -10,7 +10,7 @@ Verification of Serial Peripheral Interface (SPI) master
 | UVM sequences         | Define slave response behavior                 |
 
 
-+-------------------------+
+
 | Top-level TB            |
 |                         |
 |  - clk generation       |
@@ -20,10 +20,10 @@ Verification of Serial Peripheral Interface (SPI) master
 |    * pulse start        |
 |    * wait for done      |
 |                         |
-+------------+------------+
+
              |
              v
-+-------------------------+
+
 | SPI Master (DUT)        |
 |                         |
 |  - generates cs_n       |
@@ -31,10 +31,10 @@ Verification of Serial Peripheral Interface (SPI) master
 |  - drives mosi          |
 |  - samples miso         |
 |                         |
-+------------+------------+
+
              |
              v
-+-------------------------+
+
 | UVM SPI Slave Agent     |
 |                         |
 |  - driver (reactive)    |
@@ -42,5 +42,5 @@ Verification of Serial Peripheral Interface (SPI) master
 |    * samples mosi       |
 |  - monitor              |
 |                         |
-+-------------------------+
+
 
