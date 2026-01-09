@@ -1,9 +1,0 @@
-//
-// File created by:  xrun
-// Do not modify this file
-//
--svseed
-random
-../uvm/spi_bus_if.sv
-../rtl/spi_master.sv
-../tb/spi_master_tb.sv
