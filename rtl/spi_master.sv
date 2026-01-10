@@ -74,7 +74,7 @@ module spi_master #(
                     next_state = IDLE;
             end
             TRANSFER: begin
-                if (bit_count == DATA_LENGTH && spi_sck_rising)
+                if (bit_count == DATA_LENGTH && spi_sck_falling)
                     next_state = DONE;
                 else
                     next_state = TRANSFER;
