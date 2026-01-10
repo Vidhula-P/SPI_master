@@ -44,3 +44,29 @@ Verification of Serial Peripheral Interface (SPI) master
 |                         |
 
 
+Legend: \\
+project_root/
+├── rtl/
+│   └── spi_master.sv
+├── tb/
+│   └── spi_slave_tb.sv        # legacy (keep for reference)
+├── uvm/
+│   ├── spi_if.sv
+│   ├── spi_pkg.sv
+│   ├── env/
+│   │   ├── spi_env.sv
+│   │   └── spi_agent.sv
+│   ├── agent/
+│   │   ├── spi_driver.sv
+│   │   ├── spi_monitor.sv
+│   │   ├── spi_sequencer.sv
+│   │   └── spi_transaction.sv
+│   ├── seq/
+│   │   └── spi_basic_seq.sv
+│   ├── test/
+│   │   └── spi_basic_test.sv
+│   └── top/
+│       └── spi_uvm_tb.sv
+
+
+
