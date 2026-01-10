@@ -73,11 +73,11 @@ module spi_master_tb;
         	@(posedge clk);
         	start = 0;
 
-        	// Send MISO bits from slave
+        	// Send MISO bits as slave, read MOSI bits as CPU 
         	for (int i = DATA_LENGTH-1; i >= 0; i--) begin
-            	@(posedge spiIF.spi_sck);
+            	@(negedge spiIF.spi_sck); // in mode 0, data is sent on negative edge
             	spiIF.spi_miso = data_out_tb[i];
-				@(negedge spiIF.spi_sck);
+				@(posedge spiIF.spi_sck); // in mode 0, data is sampled on positive edge
 				data_from_master[i] = spiIF.spi_mosi;
         	end
 
@@ -87,7 +87,7 @@ module spi_master_tb;
 
         	// Wait for master to finish transaction
         	wait(done);
-        	@(posedge clk); // optional delay before next transaction
+        	@(posedge clk); // one delay before next transaction
     	end
 		$display ("Coverage = %0.2f %%", cg_inst.get_inst_coverage());
     	$finish;
