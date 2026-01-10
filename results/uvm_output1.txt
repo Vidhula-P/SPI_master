@@ -1,0 +1,53 @@
+UVM testbench topology:
+--------------------------------------------------------------
+Name                       Type                    Size  Value
+--------------------------------------------------------------
+uvm_test_top               spi_test                -     @2596
+  env                      spi_env                 -     @2655
+    agent                  spi_agent               -     @2686
+      driver               spi_driver              -     @3388
+        rsp_port           uvm_analysis_port       -     @3487
+        seq_item_port      uvm_seq_item_pull_port  -     @3438
+      monitor              spi_monitor             -     @2719
+        mon_analysis_port  uvm_analysis_port       -     @3540
+      sequencer            spi_sequencer           -     @2749
+        rsp_export         uvm_analysis_export     -     @2807
+        seq_item_export    uvm_seq_item_pull_imp   -     @3357
+        arbitration_queue  array                   0     -    
+        lock_queue         array                   0     -    
+        num_last_reqs      integral                32    'd1  
+        num_last_rsps      integral                32    'd1  
+--------------------------------------------------------------
+
+UVM_INFO ../uvm_tb/agent/spi_driver.sv(29) @ 0: uvm_test_top.env.agent.driver [spi_driver] Waiting for transaction...
+UVM_INFO ../uvm_tb/agent/spi_driver.sv(35) @ 0: uvm_test_top.env.agent.driver [spi_driver] Got transaction: tx_data=0x46
+UVM_INFO ../uvm_tb/agent/spi_driver.sv(29) @ 665000: uvm_test_top.env.agent.driver [spi_driver] Waiting for transaction...
+UVM_INFO ../uvm_tb/agent/spi_driver.sv(35) @ 665000: uvm_test_top.env.agent.driver [spi_driver] Got transaction: tx_data=0x73
+MASTER- CPU to master: aa, master to CPU: 46
+UVM_INFO ../uvm_tb/agent/spi_driver.sv(29) @ 1415000: uvm_test_top.env.agent.driver [spi_driver] Waiting for transaction...
+UVM_INFO ../uvm_tb/agent/spi_driver.sv(35) @ 1415000: uvm_test_top.env.agent.driver [spi_driver] Got transaction: tx_data=0xce
+MASTER- CPU to master: aa, master to CPU: 73
+UVM_INFO ../uvm_tb/agent/spi_driver.sv(29) @ 2165000: uvm_test_top.env.agent.driver [spi_driver] Waiting for transaction...
+UVM_INFO ../uvm_tb/agent/spi_driver.sv(35) @ 2165000: uvm_test_top.env.agent.driver [spi_driver] Got transaction: tx_data=0x56
+MASTER- CPU to master: aa, master to CPU: ce
+UVM_INFO ../uvm_tb/agent/spi_driver.sv(29) @ 2915000: uvm_test_top.env.agent.driver [spi_driver] Waiting for transaction...
+UVM_INFO ../uvm_tb/agent/spi_driver.sv(35) @ 2915000: uvm_test_top.env.agent.driver [spi_driver] Got transaction: tx_data=0xb
+MASTER- CPU to master: aa, master to CPU: 56
+UVM_INFO ../uvm_tb/agent/spi_driver.sv(29) @ 3665000: uvm_test_top.env.agent.driver [spi_driver] Waiting for transaction...
+UVM_INFO ../uvm_tb/agent/spi_driver.sv(35) @ 3665000: uvm_test_top.env.agent.driver [spi_driver] Got transaction: tx_data=0xee
+MASTER- CPU to master: aa, master to CPU: 0b
+UVM_INFO ../uvm_tb/agent/spi_driver.sv(29) @ 4415000: uvm_test_top.env.agent.driver [spi_driver] Waiting for transaction...
+UVM_INFO ../uvm_tb/agent/spi_driver.sv(35) @ 4415000: uvm_test_top.env.agent.driver [spi_driver] Got transaction: tx_data=0xfd
+MASTER- CPU to master: aa, master to CPU: ee
+UVM_INFO ../uvm_tb/agent/spi_driver.sv(29) @ 5165000: uvm_test_top.env.agent.driver [spi_driver] Waiting for transaction...
+UVM_INFO ../uvm_tb/agent/spi_driver.sv(35) @ 5165000: uvm_test_top.env.agent.driver [spi_driver] Got transaction: tx_data=0x3b
+MASTER- CPU to master: aa, master to CPU: fd
+UVM_INFO ../uvm_tb/agent/spi_driver.sv(29) @ 5915000: uvm_test_top.env.agent.driver [spi_driver] Waiting for transaction...
+UVM_INFO ../uvm_tb/agent/spi_driver.sv(35) @ 5915000: uvm_test_top.env.agent.driver [spi_driver] Got transaction: tx_data=0xa5
+MASTER- CPU to master: aa, master to CPU: 3b
+UVM_INFO ../uvm_tb/agent/spi_driver.sv(29) @ 6665000: uvm_test_top.env.agent.driver [spi_driver] Waiting for transaction...
+UVM_INFO ../uvm_tb/agent/spi_driver.sv(35) @ 6665000: uvm_test_top.env.agent.driver [spi_driver] Got transaction: tx_data=0x3d
+MASTER- CPU to master: aa, master to CPU: a5
+UVM_INFO ../uvm_tb/agent/spi_driver.sv(29) @ 7415000: uvm_test_top.env.agent.driver [spi_driver] Waiting for transaction...
+UVM_INFO ../uvm_tb/test/spi_test.sv(26) @ 7415000: uvm_test_top [spi_test] Sequence completed, dropping objection
+
