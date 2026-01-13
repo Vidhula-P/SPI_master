@@ -2,7 +2,7 @@ class spi_transaction extends uvm_sequence_item;
 
   	// Declare transaction properties, randomized
 	rand bit [DATA_LENGTH-1:0] tx_data; // data from slave (on MISO)
-	bit [DATA_LENGTH-1:0] rx_data; // data to slave (on MISO)
+	rand bit [DATA_LENGTH-1:0] rx_data; // data to slave (on MISO)
 
  	 // UVM field automation macros for printing, copying, comparing, etc.
 	`uvm_object_utils_begin(spi_transaction)
@@ -14,5 +14,7 @@ class spi_transaction extends uvm_sequence_item;
 		super.new(name);
 	endfunction
 
+	// don't choose zero since it is the "default" value
 	constraint tx_no_zero {tx_data != '0;}
+	constraint rx_no_zero {rx_data != '0;}
 endclass

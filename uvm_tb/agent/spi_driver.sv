@@ -30,9 +30,6 @@ class spi_driver extends uvm_driver #(spi_transaction);
 
 			// Get next item from the sequencer
 			seq_item_port.get_next_item (txn);
-			//data_length = $bits(txn.tx_data);
-
-			`uvm_info(get_type_name(), $sformatf("Got transaction: tx_data=0x%0h", txn.tx_data), UVM_MEDIUM)
 
 			@(negedge vif.spi_cs_n); // wait until start (cs_n pulled low)
 			`uvm_info(get_type_name(), "CS asserted, starting transfer", UVM_HIGH)

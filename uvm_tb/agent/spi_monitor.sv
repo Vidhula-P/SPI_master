@@ -25,22 +25,22 @@ class spi_monitor extends uvm_monitor;
 
 	virtual task run_phase (uvm_phase phase);
 		int i;
-		int data_length;
 		spi_transaction txn;
 		forever begin
 			@(negedge vif.spi_cs_n); // wait until start (cs_n pulled low)
 			txn = spi_transaction::type_id::create("txn", this);
-			//data_length = $bits(txn.rx_data);
+			txn.tx_data = '0;
+			txn.rx_data = '0;
 			// sample data on rising edge of sck
 			for (i = DATA_LENGTH-1; i>=0; i--) begin
 				@(posedge vif.spi_sck); // under mode 0, data is sampled on rising edge
+				txn.tx_data[i] = vif.spi_miso;
 				txn.rx_data[i] = vif.spi_mosi;
 			end
 
 			// Send data object through the analysis port when cs_n pulled high
-			@(posedge vif.spi_cs_n);
+			//if (vif.spi_cs_n)
 			mon_analysis_port.write(txn);
-			//$strobe("Data from master to slave: %0h\nData from slave to master: %h",txn.rx_data, txn.tx_data);
 		end
 	endtask
 

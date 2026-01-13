@@ -4,6 +4,7 @@ class spi_agent extends uvm_agent;
 	spi_sequencer sequencer;
 	spi_driver	  driver;
 	spi_monitor	  monitor;
+	host_monitor  host_mon;
 
 	virtual spi_bus_if vif;
 
@@ -19,7 +20,8 @@ class spi_agent extends uvm_agent;
 			`uvm_fatal(get_type_name(), "spi_bus_if not found")
 
 		// Monitor is always created
-		monitor = spi_monitor::type_id::create("monitor", this);
+		monitor  = spi_monitor::type_id::create("monitor", this);
+		host_mon = host_monitor::type_id::create("host_mon", this);
 
 		// Sequencer and driver are created in active agent
 		if(is_active == UVM_ACTIVE) begin //active by deafault so no need to change

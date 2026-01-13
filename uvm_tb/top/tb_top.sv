@@ -1,64 +1,50 @@
-class spi_host_transaction #(int DATA_LENGTH);
-	rand bit [DATA_LENGTH-1:0] data_host_to_master;
-endclass
-
-
 module tb_top;
 	import uvm_pkg::*;
 	import spi_pkg::*;
 
 	parameter DATA_LENGTH = 8;
+ 
+	logic clk;
 
-	spi_bus_if spi_if(); // SPI interface
-	logic clk, rst_n;
-	bit start, busy, done;
-
-	bit [DATA_LENGTH-1:0] data_in;
-	bit [DATA_LENGTH-1:0] data_out;
+	// SPI interfaces
+	spi_host_if hostIF(clk);
+	spi_bus_if busIF();
 
 	// Instantiate DUT
-	spi_master #(.DATA_LENGTH(DATA_LENGTH)) dut (
-		.clk(clk),
-		.rst_n(rst_n),
-		.data_in(data_in), 
-		.data_out(data_out),
-		.start(start),
-		.busy(busy),
-		.done(done),
-		.spiIF(spi_if)
-		);
+	spi_master #(.DATA_LENGTH(DATA_LENGTH)) dut (.hostIF(hostIF),.busIF(busIF));
 
-	// create an object of spi_host_transaction class
-	spi_host_transaction #(DATA_LENGTH) txn;
+	// create an object of spi_transaction class
+	spi_transaction txn_host;
 
 	// Handle external clock, reset and start chip select by pulling it down
 	initial clk = 0;
 	always #5 clk = ~clk;
 
 	initial begin
-		start = 0;
-		rst_n = 1; // triggger negedge rst_n
+		hostIF.start = 0;
+		hostIF.rst_n = 1; // triggger negedge rst_n
 		#1
-		rst_n = 0;
+		hostIF.rst_n = 0;
 		#10
-		rst_n = 1;
-		start = 1; // trigger posedge rst_n
-		txn = new();
+		hostIF.rst_n = 1;
+		hostIF.start = 1; // trigger posedge rst_n
+		txn_host = spi_transaction::type_id::create("txn_host");
 	end
 
-	always_ff @(negedge spi_if.spi_sck) begin
-		if(start) begin
-			assert(txn.randomize());
-			data_in = txn.data_host_to_master;
+	always_ff @(negedge busIF.spi_sck) begin
+		if(hostIF.start) begin
+			//assert(txn_host.randomize());
+			//hostIF.data_in = txn_host.tx_data; //data sent by host
+			hostIF.data_in = 8'h13;
+			txn_host.rx_data = hostIF.data_out; // data received by host
 		end
 	end
 
 	// Provide interface handle to UVM
 	initial begin
-		uvm_config_db#(virtual spi_bus_if)::set(null, "*", "vif", spi_if);;
+		uvm_config_db#(virtual spi_bus_if)::set(null, "*", "vif", busIF);
+		uvm_config_db#(virtual spi_host_if)::set(null, "*", "vif_host", hostIF);;
 		run_test("spi_test");
-		if (done)
-			$display("TOP- host to master: %0h, master to host: %h", data_in, data_out);
 	end
 
 endmodule
