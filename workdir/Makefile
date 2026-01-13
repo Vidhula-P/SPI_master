@@ -14,7 +14,7 @@ SIM_FLAGS = -sv \
 
 # Source files
 PKG_SRC    = ../uvm_tb/spi_pkg.sv
-INF_SRC	   = ../uvm_tb/spi_bus_if.sv
+INF_SRC	   = ../uvm_tb/spi_host_if.sv ../uvm_tb/spi_bus_if.sv
 RTL_SRC    = ../rtl/spi_master.sv
 TB_SRC     = ../tb/spi_master_tb.sv
 UVM_TB_SRC = ../uvm_tb/top/tb_top.sv
@@ -35,8 +35,13 @@ run_gui:
 run_cover:
 	$(SIM) -svseed random -coverage functional $(INF_SRC) $(RTL_SRC) $(TB_SRC)
 
+# Run UVM testbench without GUI
 run_uvm:
-	$(SIM) $(SIM_FLAGS) $(INF_SRC) $(PKG_SRC) $(RTL_SRC) $(UVM_TB_SRC)
+	$(SIM) -svseed random $(SIM_FLAGS) $(INF_SRC) $(PKG_SRC) $(RTL_SRC) $(UVM_TB_SRC)
+
+# Run UVM testbench with GUI
+run_uvm_gui:
+	$(SIM) -svseed random $(SIM_FLAGS) $(INF_SRC) $(PKG_SRC) $(RTL_SRC) $(UVM_TB_SRC) -gui -access rwc
 
 # Clean simulator files
 clean:
