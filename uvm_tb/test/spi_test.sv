@@ -21,8 +21,9 @@ class spi_test extends uvm_test;
 	endfunction
 
 	task wait_for_done();
-		// Wait for last DONE pulse before ending simulation
+		// Wait for last DONE pulse to be over before ending simulation
 		@(posedge vif_host.done);
+		@(posedge vif_host.clk);
 	endtask
 
 
