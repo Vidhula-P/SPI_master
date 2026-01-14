@@ -31,6 +31,7 @@ class spi_monitor extends uvm_monitor;
 			txn = spi_transaction::type_id::create("txn", this);
 			txn.tx_data = '0;
 			txn.rx_data = '0;
+			@(posedge vif.spi_sck); // ignore first posedge since driver updates on negedge
 			// sample data on rising edge of sck
 			for (i = DATA_LENGTH-1; i>=0; i--) begin
 				@(posedge vif.spi_sck); // under mode 0, data is sampled on rising edge

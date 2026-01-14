@@ -33,9 +33,8 @@ module tb_top;
 
 	always_ff @(negedge busIF.spi_sck) begin
 		if(hostIF.start) begin
-			//assert(txn_host.randomize());
-			//hostIF.data_in = txn_host.tx_data; //data sent by host
-			hostIF.data_in = 8'h13;
+			assert(txn_host.randomize());
+			hostIF.data_in = txn_host.tx_data; //data sent by host
 			txn_host.rx_data = hostIF.data_out; // data received by host
 		end
 	end

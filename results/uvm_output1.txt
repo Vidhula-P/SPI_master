@@ -24,24 +24,23 @@ uvm_test_top                spi_test                -     @2623
       slave_imp             uvm_analysis_imp_slave  -     @3801
 ---------------------------------------------------------------
 
-After adding scoreboard-
+After adding scoreboard (Note slave rx will be delayed by 1)-
 
 UVM_INFO ../uvm_tb/test/spi_test.sv(22) @ 0: uvm_test_top [spi_test] Starting run_phase
 UVM_INFO ../uvm_tb/test/spi_test.sv(24) @ 0: uvm_test_top [spi_test] Objection raised, starting sequence
 UVM_INFO ../uvm_tb/agent/spi_driver.sv(29) @ 0: uvm_test_top.env.agent.driver [spi_driver] Waiting for transaction...
 UVM_INFO ../uvm_tb/agent/spi_driver.sv(29) @ 665000: uvm_test_top.env.agent.driver [spi_driver] Waiting for transaction...
-UVM_INFO ../uvm_tb/env/spi_scoreboard.sv(50) @ 755000: uvm_test_top.env.sb [SPI_SB] HOST tx=13 rx=e5 | SLAVE tx=72 rx=00
-MASTER- CPU to master: 13, master to CPU: e5
+UVM_INFO ../uvm_tb/env/spi_scoreboard.sv(50) @ 755000: uvm_test_top.env.sb [SPI_SB] HOST tx=bc rx=05 | SLAVE tx=05 rx=00
+MASTER- CPU to master: bc, master to CPU: 05
 UVM_INFO ../uvm_tb/agent/spi_driver.sv(29) @ 1415000: uvm_test_top.env.agent.driver [spi_driver] Waiting for transaction...
-UVM_INFO ../uvm_tb/env/spi_scoreboard.sv(50) @ 1505000: uvm_test_top.env.sb [SPI_SB] HOST tx=13 rx=e5 | SLAVE tx=f2 rx=09
-MASTER- CPU to master: 13, master to CPU: e5
+UVM_INFO ../uvm_tb/env/spi_scoreboard.sv(50) @ 1505000: uvm_test_top.env.sb [SPI_SB] HOST tx=b4 rx=33 | SLAVE tx=33 rx=bc
+MASTER- CPU to master: b4, master to CPU: 33
 UVM_INFO ../uvm_tb/agent/spi_driver.sv(29) @ 2165000: uvm_test_top.env.agent.driver [spi_driver] Waiting for transaction...
-UVM_INFO ../uvm_tb/env/spi_scoreboard.sv(50) @ 2255000: uvm_test_top.env.sb [SPI_SB] HOST tx=13 rx=e5 | SLAVE tx=f2 rx=09
-MASTER- CPU to master: 13, master to CPU: e5
+UVM_INFO ../uvm_tb/env/spi_scoreboard.sv(50) @ 2255000: uvm_test_top.env.sb [SPI_SB] HOST tx=7e rx=8d | SLAVE tx=8d rx=b4
+MASTER- CPU to master: 7e, master to CPU: 8d
 UVM_INFO ../uvm_tb/agent/spi_driver.sv(29) @ 2915000: uvm_test_top.env.agent.driver [spi_driver] Waiting for transaction...
-UVM_INFO ../uvm_tb/env/spi_scoreboard.sv(50) @ 3005000: uvm_test_top.env.sb [SPI_SB] HOST tx=13 rx=e5 | SLAVE tx=f2 rx=09
-MASTER- CPU to master: 13, master to CPU: e5
+UVM_INFO ../uvm_tb/env/spi_scoreboard.sv(50) @ 3005000: uvm_test_top.env.sb [SPI_SB] HOST tx=2e rx=15 | SLAVE tx=15 rx=7e
+MASTER- CPU to master: 2e, master to CPU: 15
 UVM_INFO ../uvm_tb/agent/spi_driver.sv(29) @ 3665000: uvm_test_top.env.agent.driver [spi_driver] Waiting for transaction...
 UVM_INFO ../uvm_tb/test/spi_test.sv(26) @ 3665000: uvm_test_top [spi_test] Sequence completed, dropping objection
 UVM_INFO /opt/cadence/XCELIUM2403/tools/methodology/UVM/CDNS-1.1d/sv/src/base/uvm_objection.svh(1268) @ 3665000: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
-

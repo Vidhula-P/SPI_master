@@ -12,8 +12,7 @@ class spi_sequence extends uvm_sequence #(spi_transaction);
 		repeat(5) begin  // Send 5 transactions
 			trans = spi_transaction::type_id::create("trans");
 			start_item(trans);
-			//assert(trans.randomize());
-			trans.tx_data = 8'he5;
+			assert(trans.randomize());
 			finish_item(trans);
 		end
 		
