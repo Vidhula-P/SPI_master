@@ -40,20 +40,22 @@ class spi_scoreboard extends uvm_scoreboard;
 
 	virtual task run_phase (uvm_phase phase);
 		//super.run_phase(phase);
-		spi_transaction host_val, slave_val;
+		spi_transaction prev_host_val, prev_slave_val, host_val, slave_val;
 		forever begin
 			wait (host_q.size() > 0 && slave_q.size() > 0);
 			host_val = host_q.pop_front();
 			slave_val = slave_q.pop_front();
 
-			`uvm_info("SPI_SB", $sformatf("HOST id=%0d tx=%0h rx=%0h | SLAVE id=%0d tx=%0h rx=%0h", 
-	host_val.txn_id, host_val.tx_data, host_val.rx_data, slave_val.txn_id, slave_val.tx_data, slave_val.rx_data), UVM_MEDIUM)
+			if (host_val.txn_id > 0) begin
+				`uvm_info("SPI_SB", $sformatf("HOST id=%0d tx=%0h rx=%0h | SLAVE id=%0d tx=%0h rx=%0h", 
+				prev_host_val.txn_id, prev_host_val.tx_data, prev_host_val.rx_data, 
+				prev_slave_val.txn_id, prev_slave_val.tx_data, slave_val.rx_data), UVM_MEDIUM)
+			end
+			// since data received by slave is only received at the end of the cycle, 
+			// it becomes available in time for next cycle
 
-			/*if (host_val.tx_data !== slave_val.tx_data)
-				`uvm_error("SPI_SB", "TX mismatch")
-
-			if (host_val.rx_data !== slave_val.rx_data)
-				`uvm_error("SPI_SB", "RX mismatch")*/
+			prev_host_val = host_val;
+			prev_slave_val = slave_val;
 		end
 	endtask
 endclass
