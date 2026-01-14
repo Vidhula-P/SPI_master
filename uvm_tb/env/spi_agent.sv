@@ -6,7 +6,8 @@ class spi_agent extends uvm_agent;
 	spi_monitor	  monitor;
 	host_monitor  host_mon;
 
-	virtual spi_bus_if vif;
+	virtual spi_bus_if vif_bus;
+	virtual spi_host_if vif_host;
 
 	function new(string name = "spi_agent", uvm_component parent = null);
 		super.new(name, parent);
@@ -16,8 +17,10 @@ class spi_agent extends uvm_agent;
 		super.build_phase(phase);
 
 		// Get interface
-		if (!uvm_config_db#(virtual spi_bus_if)::get(this, "", "vif", vif))
-			`uvm_fatal(get_type_name(), "spi_bus_if not found")
+		if (!uvm_config_db #(virtual spi_bus_if) :: get (this, "", "vif_bus", vif_bus)) 
+			`uvm_fatal (get_type_name (), "Didn't get handle to virtual interface vif_bus")
+		if (!uvm_config_db #(virtual spi_host_if) :: get (this, "", "vif_host", vif_host)) 
+			`uvm_fatal (get_type_name (), "Didn't get handle to virtual interface vif_host")
 
 		// Monitor is always created
 		monitor  = spi_monitor::type_id::create("monitor", this);

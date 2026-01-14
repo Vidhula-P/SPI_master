@@ -45,6 +45,6 @@ run_uvm_gui:
 
 # Clean simulator files
 clean:
-	rm -rf xcelium.d xrun.* cov_work waves.shm
+	rm -rf xcelium.d xrun.* cov_work waves.shm .simvision
 
 .PHONY: all run run_gui clean
