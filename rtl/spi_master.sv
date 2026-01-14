@@ -127,7 +127,7 @@ module spi_master #(
                     bit_count 		<='0;
                     hostIF.done     <= 1;
                     hostIF.data_out <= shift_reg_rx;
-					$strobe("MASTER- CPU to master: %h, master to CPU: %h", hostIF.data_in, hostIF.data_out);
+					//$strobe("MASTER- CPU to master: %h, master to CPU: %h", hostIF.data_in, hostIF.data_out);
                 end
             endcase
         end 
