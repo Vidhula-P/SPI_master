@@ -24,8 +24,9 @@ class spi_monitor extends uvm_monitor;
 	endfunction
 
 	virtual task run_phase (uvm_phase phase);
-		int i;
+		int i, next_id;
 		spi_transaction txn;
+		next_id = 0;
 		forever begin
 			@(negedge vif_bus.spi_cs_n); // wait until start (cs_n pulled low)
 			txn = spi_transaction::type_id::create("txn", this);
@@ -38,10 +39,11 @@ class spi_monitor extends uvm_monitor;
 				txn.tx_data[i] = vif_bus.spi_miso;
 				txn.rx_data[i] = vif_bus.spi_mosi;
 			end
-
+			txn.txn_id = next_id;
 			// Send data object through the analysis port when cs_n pulled high
 			//if (vif_bus.spi_cs_n)
 			mon_analysis_port.write(txn);
+			next_id = next_id + 1;
 		end
 	endtask
 
