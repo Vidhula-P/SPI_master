@@ -37,7 +37,7 @@ run_cover:
 
 # Run UVM testbench without GUI
 run_uvm:
-	$(SIM) -svseed random $(SIM_FLAGS) $(INF_SRC) $(PKG_SRC) $(RTL_SRC) $(UVM_TB_SRC)
+	$(SIM) -svseed random -coverage functional $(SIM_FLAGS) $(INF_SRC) $(PKG_SRC) $(RTL_SRC) $(UVM_TB_SRC)
 
 # Run UVM testbench with GUI
 run_uvm_gui:
