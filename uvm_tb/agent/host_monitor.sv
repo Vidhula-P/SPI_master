@@ -24,13 +24,17 @@ class host_monitor extends uvm_monitor;
 	endfunction
 
 	virtual task run_phase (uvm_phase phase);
+		int next_id;
 		spi_transaction txn;
+		next_id = 0;
 		forever begin
 			@(posedge vif_host.done); // wait for rising edge
 			txn = spi_transaction::type_id::create("txn", this);
 			txn.tx_data = vif_host.data_in;
 			txn.rx_data = vif_host.data_out;
+			txn.txn_id  = next_id;
 			host_analysis_port.write(txn);
+			next_id = next_id + 1;
 		end
 	endtask
 

@@ -1,5 +1,5 @@
 class spi_transaction extends uvm_sequence_item;
-
+	int unsigned txn_id; // to keep track of the transaction
   	// Declare transaction properties, randomized
 	rand bit [DATA_LENGTH-1:0] tx_data; // data from slave (on MISO)
 	rand bit [DATA_LENGTH-1:0] rx_data; // data to slave (on MISO)

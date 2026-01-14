@@ -46,8 +46,8 @@ class spi_scoreboard extends uvm_scoreboard;
 			host_val = host_q.pop_front();
 			slave_val = slave_q.pop_front();
 
-			`uvm_info("SPI_SB", $sformatf("HOST tx=%h rx=%h | SLAVE tx=%h rx=%h", 
-					host_val.tx_data, host_val.rx_data, slave_val.tx_data, slave_val.rx_data), UVM_MEDIUM)
+			`uvm_info("SPI_SB", $sformatf("HOST id=%0d tx=%0h rx=%0h | SLAVE id=%0d tx=%0h rx=%0h", 
+	host_val.txn_id, host_val.tx_data, host_val.rx_data, slave_val.txn_id, slave_val.tx_data, slave_val.rx_data), UVM_MEDIUM)
 
 			/*if (host_val.tx_data !== slave_val.tx_data)
 				`uvm_error("SPI_SB", "TX mismatch")

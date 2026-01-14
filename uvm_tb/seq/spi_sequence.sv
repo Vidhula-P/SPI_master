@@ -8,12 +8,16 @@ class spi_sequence extends uvm_sequence #(spi_transaction);
 	endfunction
 
 	virtual task body();
-		spi_transaction trans = spi_transaction::type_id::create("txn");
-		repeat(5) begin  // Send 5 transactions
-			trans = spi_transaction::type_id::create("trans");
-			start_item(trans);
-			assert(trans.randomize());
-			finish_item(trans);
+		int next_id;
+		spi_transaction txn = spi_transaction::type_id::create("txn");
+		next_id = 0;
+		repeat(5) begin  // Send 5 txnactions
+			txn = spi_transaction::type_id::create("txn");
+			start_item(txn);
+			assert(txn.randomize());
+			txn.txn_id = next_id;
+			finish_item(txn);
+			next_id++;
 		end
 		
 	endtask
