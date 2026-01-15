@@ -9,11 +9,24 @@ class spi_monitor extends uvm_monitor;
 
 	// covergroup to capture functional coverage
 	int txn_id_cp;
-	logic [DATA_LENGTH-1:0] tx_data_cp, rx_data_cp;
+	logic [DATA_LENGTH-1:0] tx_data_cp;
+	bit rx_match_cp;
 	covergroup cg_inst;
-		coverpoint tx_data_cp;
-		coverpoint rx_data_cp;
-		coverpoint txn_id_cp;
+		coverpoint tx_data_cp {
+    		bins all_zero = { '0 };
+    		bins all_one  = { '1 };
+    		bins alt_1010 = { 8'hAA, 8'h55 };
+    		bins others  = default;
+		}
+		coverpoint rx_match_cp {
+    		bins match    = {1};
+			bins mismatch = {0};
+			}
+		coverpoint txn_id_cp {
+			bins first = {0};
+			bins mid[] = {[1:10]};
+			bins high  = {[11:$]};
+		}
 	endgroup 
 
 	virtual function void build_phase (uvm_phase phase);
@@ -55,7 +68,7 @@ class spi_monitor extends uvm_monitor;
 			// send to coverage
 			txn_id_cp = txn.txn_id;
 			tx_data_cp = txn.tx_data;
-			rx_data_cp = txn.rx_data;
+			rx_match_cp = (txn.rx_data == txn.tx_data);
 			cg_inst.sample();
 
 			// Send data object through the analysis port before cs_n pulled high
