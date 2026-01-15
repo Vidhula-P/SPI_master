@@ -1,4 +1,7 @@
 # SPI master
 Verification of Serial Peripheral Interface (SPI) master using Universal Verification Methodology (UVM)
-Tests:
-1. spi_sequence randomly generates 10 data (from slave to master)
+- Built a modular UVM verification environment (agent, sequencer, driver, monitors, scoreboard).
+- Created constrained-random and directed tests for full-duplex SPI transactions.
+- Developed a scoreboard with temporal alignment to ensure accurate master/ slave data correlation.
+- Achieved 78% functional coverage, including corner cases and protocol compliance.
+- Debugged clock-edge and sampling issues, improving data integrity across transfers.
