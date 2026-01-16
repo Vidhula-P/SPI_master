@@ -4,7 +4,7 @@ package spi_pkg;
 	parameter int DATA_LENGTH = 8; 
 
 	`include "uvm_macros.svh"
-	`include "agent/spi_transaction.sv"
+	`include "seq/spi_transaction.sv"
 	`include "agent/spi_driver.sv"
 	`include "env/spi_scoreboard.sv"
 	`include "agent/spi_monitor.sv"
