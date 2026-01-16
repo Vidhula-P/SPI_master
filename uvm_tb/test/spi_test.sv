@@ -11,7 +11,8 @@ class spi_test extends uvm_test;
 
 	virtual function void build_phase(uvm_phase phase);
 		super.build_phase(phase);
-		spi_sequence::type_id::set_type_override(full_seqs::get_type());
+		// override base sequence
+		uvm_factory::get().set_type_override_by_type(spi_sequence::get_type(), full_seqs::get_type());
 		env = spi_env::type_id::create("env", this);
 		if (!uvm_config_db#(virtual spi_host_if)::get(this, "", "vif_host", vif_host))
 			`uvm_fatal(get_type_name(), "vif_host not found")
@@ -29,6 +30,7 @@ class spi_test extends uvm_test;
 
 
 	virtual task run_phase(uvm_phase phase);
+		// need to explicitly create sequence since we need to wait_for_done()
 		spi_sequence seq = spi_sequence::type_id::create("seq");
 
 		phase.raise_objection(this);
