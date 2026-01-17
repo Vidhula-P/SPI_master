@@ -10,13 +10,11 @@ class spi_sequence extends uvm_sequence #(spi_transaction);
 	virtual task body();
 		int next_id;
 		spi_transaction txn = spi_transaction::type_id::create("txn");
-		next_id = 0;
 		`uvm_info("SEQ", "Executing spi_sequence", UVM_MEDIUM)
 		repeat(5) begin  // Send 5 transactions
 			txn = spi_transaction::type_id::create("txn");
 			start_item(txn);
 			assert(txn.randomize());
-			txn.txn_id = next_id;
 			finish_item(txn);
 			next_id++;
 		end	
@@ -34,26 +32,22 @@ class example_seq extends spi_sequence;
 		int next_id;
 		spi_transaction txn = spi_transaction::type_id::create("txn");
 		`uvm_info("SEQ", "Executing example_seq", UVM_MEDIUM)
-		next_id = 0;
 		txn = spi_transaction::type_id::create("txn");
 		start_item(txn);
 		txn.tx_data = 8'he5; 
-		txn.rx_data = 8'haa; 
-		txn.txn_id = next_id;
+		txn.rx_data = 8'haa;
 		finish_item(txn);
 		next_id = 1;
 		txn = spi_transaction::type_id::create("txn");
 		start_item(txn);
 		txn.tx_data = 8'h3f;
 		txn.rx_data = 8'h67;
-		txn.txn_id = next_id;
 		finish_item(txn);
 		next_id = 2;
 		txn = spi_transaction::type_id::create("txn");
 		start_item(txn);
 		txn.tx_data = 8'h88;
 		txn.rx_data = 8'h22;
-		txn.txn_id = next_id;
 		finish_item(txn);
 	endtask
 endclass
@@ -86,12 +80,10 @@ class random_seq extends spi_sequence;
 		int next_id;
 		spi_transaction txn = spi_transaction::type_id::create("txn");
 		`uvm_info("SEQ", "Executing random_seq", UVM_MEDIUM)
-		next_id = 0;
 		repeat(100) begin  // Send 100 transactions
 			txn = spi_transaction::type_id::create("txn");
 			start_item(txn);
 			assert(txn.randomize());
-			txn.txn_id = next_id;
 			finish_item(txn);
 			next_id++;
 		end	
@@ -128,15 +120,13 @@ class all_zeroes extends spi_sequence; //should fail assertion
 		int next_id;
 		spi_transaction txn = spi_transaction::type_id::create("txn");
 		`uvm_info("SEQ", "Executing example_seq", UVM_MEDIUM)
-		next_id = 0;
 		repeat (3) begin
 			txn = spi_transaction::type_id::create("txn");
 			txn.tx_no_zero.constraint_mode(0);
 			txn.rx_no_zero.constraint_mode(0);
 			start_item(txn);
 			txn.tx_data = '0; 
-			txn.rx_data = '0; 
-			txn.txn_id = next_id;
+			txn.rx_data = '0;
 			finish_item(txn);
 			next_id++;
 		end

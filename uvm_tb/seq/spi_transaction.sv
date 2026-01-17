@@ -1,4 +1,5 @@
 class spi_transaction extends uvm_sequence_item;
+	static int counter;
 	int unsigned txn_id; // to keep track of the transaction
   	// Declare transaction properties, randomized
 	rand bit [DATA_LENGTH-1:0] tx_data; // data from slave (on MISO)
@@ -6,12 +7,15 @@ class spi_transaction extends uvm_sequence_item;
 
  	 // UVM field automation macros for printing, copying, comparing, etc.
 	`uvm_object_utils_begin(spi_transaction)
+		`uvm_field_int(txn_id, UVM_ALL_ON)
     	`uvm_field_int(tx_data, UVM_ALL_ON)
     	`uvm_field_int(rx_data, UVM_ALL_ON)
 	`uvm_object_utils_end
 
 	function new(string name = "spi_transaction");
 		super.new(name);
+		txn_id = counter;
+		counter++;
 	endfunction
 
 	// don't choose zero since it is the "default" value
