@@ -70,7 +70,6 @@ class repeat_seq extends spi_sequence;
 	virtual task body();
 		`uvm_info("SEQ", "Executing repeat_seq", UVM_MEDIUM)
 		repeat(5) begin
-			ex_seq = example_seq::type_id::create("ex_seq");
 			`uvm_do(ex_seq)
 		end
 	endtask
@@ -111,7 +110,6 @@ class all_ones extends spi_sequence;
 	virtual task body();
 		`uvm_info("SEQ", "Executing all_ones", UVM_MEDIUM)
 		repeat(5) begin
-			spi_txn = spi_transaction::type_id::create("spi_txn");
 			`uvm_do_with(spi_txn, {tx_data == {DATA_LENGTH{1'b1}}; rx_data == {DATA_LENGTH{1'b1}};})
 		end
 	endtask
@@ -127,12 +125,30 @@ class all_zeroes extends spi_sequence; //should fail assertion
 	spi_transaction spi_txn;
 
 	virtual task body();
-		`uvm_info("SEQ", "Executing all_zeroes", UVM_MEDIUM)
-		repeat(5) begin
-			spi_txn = spi_transaction::type_id::create("spi_txn");
-			`uvm_do_with(spi_txn, {tx_data == '0; rx_data == '0;})
+		int next_id;
+		spi_transaction txn = spi_transaction::type_id::create("txn");
+		`uvm_info("SEQ", "Executing example_seq", UVM_MEDIUM)
+		next_id = 0;
+		repeat (3) begin
+			txn = spi_transaction::type_id::create("txn");
+			txn.tx_no_zero.constraint_mode(0);
+			txn.rx_no_zero.constraint_mode(0);
+			start_item(txn);
+			txn.tx_data = '0; 
+			txn.rx_data = '0; 
+			txn.txn_id = next_id;
+			finish_item(txn);
+			next_id++;
 		end
 	endtask
+endclass
+
+class sparse_seq extends spi_sequence;
+	// to be filled
+endclass
+
+class dense_seq extends spi_sequence;
+	// to be filled
 endclass
 
 class alternate_seq extends spi_sequence;
@@ -147,13 +163,12 @@ class alternate_seq extends spi_sequence;
 	virtual task body();
 		`uvm_info("SEQ", "Executing alternate_seq", UVM_MEDIUM)
 		repeat(5) begin
-			spi_txn = spi_transaction::type_id::create("spi_txn");
 			`uvm_do_with(spi_txn, {tx_data == {(DATA_LENGTH>>1){2'b10}}; rx_data == {(DATA_LENGTH>>1){2'b01}};})
 		end
 	endtask
 endclass
 
-class full_seqs extends spi_sequence; //should fail assertion
+class full_seqs extends spi_sequence;
 	`uvm_object_utils(full_seqs)
 
 	function new (string name = "full_seqs");
@@ -169,17 +184,11 @@ class full_seqs extends spi_sequence; //should fail assertion
 
 	virtual task body();
 		`uvm_info("SEQ", "Executing full_seqs", UVM_MEDIUM)
-		ex_seq = example_seq::type_id::create("ex_seq");
 		`uvm_do(ex_seq)
-		rep_seq = repeat_seq::type_id::create("rep_seq");
 		`uvm_do(rep_seq)
-		rand_seq = random_seq::type_id::create("rand_seq");
 		`uvm_do(rand_seq)
-		all_1_seq = all_ones::type_id::create("all_1_seq");
 		`uvm_do(all_1_seq)
-		all_0_seq = all_zeroes::type_id::create("all_0_seq");
 		`uvm_do(all_0_seq)
-		alt_seq = alternate_seq::type_id::create("alt_seq");
 		`uvm_do(alt_seq)
 	endtask
 endclass
