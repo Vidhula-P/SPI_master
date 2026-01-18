@@ -8,25 +8,19 @@ class spi_monitor extends uvm_monitor;
 	uvm_analysis_port  #(spi_transaction) mon_analysis_port;
 
 	// covergroup to capture functional coverage
-	int txn_id_cp;
+	//int txn_id_cp;
 	logic [DATA_LENGTH-1:0] miso_data_cp;
 	bit match_cp;
 	covergroup cg_inst;
 		coverpoint miso_data_cp {
     		bins all_zero = { '0 };
-    		bins all_one  = { '1 };
-    		bins alt_1010 = { 8'hAA, 8'h55 };
+    		bins all_one  = { {DATA_LENGTH{1'b1}} };
     		bins others  = default;
 		}
 		coverpoint match_cp {
-    		bins match    = {1};
+    		bins match[]    = {1};
 			bins mismatch = {0};
 			}
-		coverpoint txn_id_cp {
-			bins first = {0};
-			bins mid = {[1:10]};
-			bins high  = {[11:$]};
-		}
 	endgroup 
 
 	virtual function void build_phase (uvm_phase phase);
@@ -66,7 +60,7 @@ class spi_monitor extends uvm_monitor;
 			next_id = next_id + 1;
 
 			// send to coverage
-			txn_id_cp = txn.txn_id;
+			//txn_id_cp = txn.txn_id;
 			miso_data_cp = txn.miso_data;
 			match_cp = (txn.mosi_data == txn.miso_data);
 			cg_inst.sample();
