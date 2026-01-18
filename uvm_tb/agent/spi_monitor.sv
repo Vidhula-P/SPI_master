@@ -12,13 +12,13 @@ class spi_monitor extends uvm_monitor;
 	logic [DATA_LENGTH-1:0] miso_data_cp;
 	bit match_cp;
 	covergroup cg_inst;
+	option.per_instance = 1;
 		coverpoint miso_data_cp {
     		bins all_zero = { '0 };
     		bins all_one  = { {DATA_LENGTH{1'b1}} };
 			bins low = { [1: DATA_LENGTH/4] };
 			bins mid = { [ (DATA_LENGTH/4) + 1 : 3*DATA_LENGTH/4 ] };
 			bins high = { [(3*DATA_LENGTH/4) + 1 : DATA_LENGTH] };
-			bins x_or_z = { 'x, 'z};
     		bins others  = default;
 		}
 		coverpoint match_cp {
