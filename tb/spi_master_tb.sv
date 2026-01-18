@@ -6,21 +6,21 @@ class spi_transaction #(int DATA_LENGTH = 8);
 	rand bit [DATA_LENGTH-1:0] tx_data; // data from CPU to send to slave
 	rand bit [DATA_LENGTH-1:0] rx_data; // data from slave to CPU
 
-	constraint tx_no_zero {tx_data != 8'h00;}
-	constraint rx_no_zero {rx_data != 8'h00;}
+	constraint tx_no_zero {tx_data != '0;}
+	constraint rx_no_zero {rx_data != '0;}
 endclass
 
 module spi_master_tb;
-    parameter DATA_LENGTH = 8;
+    parameter DATA_LENGTH = 16;
     parameter CLK_DIV = 4;
 
 	logic clk;
-    spi_host_if hostIF(clk);
+    spi_host_if #(16) hostIF(clk);
     spi_bus_if busIF(); // instantiating the bus interface
 
     bit [DATA_LENGTH-1:0] data_out_tb;
 	bit [DATA_LENGTH-1:0] data_from_master;
-    spi_transaction #(8) spi_obj;
+    spi_transaction #(16) spi_obj;
 
     spi_master #(.DATA_LENGTH(DATA_LENGTH), .CLK_DIV(CLK_DIV)) s1(.hostIF(hostIF), .busIF(busIF) );
 
