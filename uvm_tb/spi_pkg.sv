@@ -1,7 +1,7 @@
 package spi_pkg;
 	import uvm_pkg::*;
 	
-	parameter int DATA_LENGTH = 32; // maximum length
+	parameter int DATA_LENGTH = 8; // maximum length
 
 	`include "uvm_macros.svh"
 	`include "seq/spi_transaction.sv"

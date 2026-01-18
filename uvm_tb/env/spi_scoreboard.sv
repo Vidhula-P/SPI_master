@@ -35,7 +35,7 @@ class spi_scoreboard extends uvm_scoreboard;
 	endfunction
 
 	/*virtual function void write (spi_transaction trans);
-		`uvm_info("write", $sformatf("SCOREBOARD: tx_data = %h, rx_data = %h", trans.tx_data, trans.rx_data), UVM_MEDIUM)
+		`uvm_info("write", $sformatf("SCOREBOARD: miso_data = %h, mosi_data = %h", trans.miso_data, trans.mosi_data), UVM_MEDIUM)
 	endfunction*/
 
 	virtual task run_phase (uvm_phase phase);
@@ -47,16 +47,16 @@ class spi_scoreboard extends uvm_scoreboard;
 			slave_val = slave_q.pop_front();
 
 			if (host_val.txn_id > 0) begin
-				if (prev_host_val.tx_data != slave_val.rx_data || prev_host_val.rx_data != prev_slave_val.tx_data) begin
+				if (prev_host_val.miso_data != slave_val.mosi_data || prev_host_val.mosi_data != prev_slave_val.miso_data) begin
 					`uvm_error("SPI_MISMACTH", $sformatf("Mismatch between master <-> slave data for transaction number [%0d]", prev_host_val.txn_id))
 					`uvm_info("SPI_SB", $sformatf("HOST id=%0d tx=%0h rx=%0h | SLAVE id=%0d tx=%0h rx=%0h",
-					      prev_host_val.txn_id, prev_host_val.tx_data, prev_host_val.rx_data,
-					      prev_slave_val.txn_id, prev_slave_val.tx_data, slave_val.rx_data), UVM_MEDIUM)
+					      prev_host_val.txn_id, prev_host_val.miso_data, prev_host_val.mosi_data,
+					      prev_slave_val.txn_id, prev_slave_val.miso_data, slave_val.mosi_data), UVM_MEDIUM)
 					end else begin
 					`uvm_info("SPI_MATCH", $sformatf("Transaction [%0d] passed", prev_host_val.txn_id), UVM_MEDIUM)
 					`uvm_info("SPI_SB", $sformatf("HOST id=%0d tx=%0h rx=%0h | SLAVE id=%0d tx=%0h rx=%0h",
-					      prev_host_val.txn_id, prev_host_val.tx_data, prev_host_val.rx_data,
-					      prev_slave_val.txn_id, prev_slave_val.tx_data, slave_val.rx_data), UVM_MEDIUM)
+					      prev_host_val.txn_id, prev_host_val.miso_data, prev_host_val.mosi_data,
+					      prev_slave_val.txn_id, prev_slave_val.miso_data, slave_val.mosi_data), UVM_MEDIUM)
 					end
 			end
 			// since data received by slave is only received at the end of the cycle, 

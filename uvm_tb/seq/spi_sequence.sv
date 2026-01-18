@@ -35,18 +35,18 @@ class example_seq extends spi_sequence;
 		repeat (2) begin
 			txn = spi_transaction::type_id::create("txn");
 			start_item(txn);
-			txn.tx_data = 8'he5; 
-			txn.rx_data = 8'haa;
+			txn.miso_data = 8'he5; 
+			txn.mosi_data = 8'haa;
 			finish_item(txn);
 			txn = spi_transaction::type_id::create("txn");
 			start_item(txn);
-			txn.tx_data = 16'h623f;
-			txn.rx_data = 16'hcd67;
+			txn.miso_data = 8'h3f;
+			txn.mosi_data = 8'h67;
 			finish_item(txn);
 			txn = spi_transaction::type_id::create("txn");
 			start_item(txn);
-			txn.tx_data = 32'h88668866;
-			txn.rx_data = 32'h33cc33cc;
+			txn.miso_data = 8'h66;
+			txn.mosi_data = 8'hcc;
 			finish_item(txn);
 		end
 	endtask
@@ -102,7 +102,7 @@ class all_ones extends spi_sequence;
 	virtual task body();
 		`uvm_info("SEQ", "Executing all_ones", UVM_MEDIUM)
 		repeat(5) begin
-			`uvm_do_with(spi_txn, {tx_data == {DATA_LENGTH{1'b1}}; rx_data == {DATA_LENGTH{1'b1}};})
+			`uvm_do_with(spi_txn, {miso_data == {DATA_LENGTH{1'b1}}; mosi_data == {DATA_LENGTH{1'b1}};})
 		end
 	endtask
 endclass
@@ -125,8 +125,8 @@ class all_zeroes extends spi_sequence; //should fail assertion
 			txn.tx_no_zero.constraint_mode(0);
 			txn.rx_no_zero.constraint_mode(0);
 			start_item(txn);
-			txn.tx_data = '0; 
-			txn.rx_data = '0;
+			txn.miso_data = '0; 
+			txn.mosi_data = '0;
 			finish_item(txn);
 			next_id++;
 		end
@@ -153,7 +153,7 @@ class alternate_seq extends spi_sequence;
 	virtual task body();
 		`uvm_info("SEQ", "Executing alternate_seq", UVM_MEDIUM)
 		repeat(5) begin
-			`uvm_do_with(spi_txn, {tx_data == {(DATA_LENGTH>>1){2'b10}}; rx_data == {(DATA_LENGTH>>1){2'b01}};})
+			`uvm_do_with(spi_txn, {miso_data == {(DATA_LENGTH>>1){2'b10}}; mosi_data == {(DATA_LENGTH>>1){2'b01}};})
 		end
 	endtask
 endclass

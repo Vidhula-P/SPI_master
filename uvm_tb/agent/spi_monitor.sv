@@ -9,22 +9,22 @@ class spi_monitor extends uvm_monitor;
 
 	// covergroup to capture functional coverage
 	int txn_id_cp;
-	logic [DATA_LENGTH-1:0] tx_data_cp;
-	bit rx_match_cp;
+	logic [DATA_LENGTH-1:0] miso_data_cp;
+	bit match_cp;
 	covergroup cg_inst;
-		coverpoint tx_data_cp {
+		coverpoint miso_data_cp {
     		bins all_zero = { '0 };
     		bins all_one  = { '1 };
     		bins alt_1010 = { 8'hAA, 8'h55 };
     		bins others  = default;
 		}
-		coverpoint rx_match_cp {
+		coverpoint match_cp {
     		bins match    = {1};
 			bins mismatch = {0};
 			}
 		coverpoint txn_id_cp {
 			bins first = {0};
-			bins mid[] = {[1:10]};
+			bins mid = {[1:10]};
 			bins high  = {[11:$]};
 		}
 	endgroup 
@@ -53,22 +53,22 @@ class spi_monitor extends uvm_monitor;
 		forever begin
 			@(negedge vif_bus.spi_cs_n); // wait until start (cs_n pulled low)
 			txn = spi_transaction::type_id::create("txn", this);
-			txn.tx_data = '0;
-			txn.rx_data = '0;
+			txn.miso_data = '0;
+			txn.mosi_data = '0;
 			@(posedge vif_bus.spi_sck); // ignore first posedge since driver updates on negedge
 			// sample data on rising edge of sck
 			for (i = DATA_LENGTH-1; i>=0; i--) begin
 				@(posedge vif_bus.spi_sck); // under mode 0, data is sampled on rising edge
-				txn.tx_data[i] = vif_bus.spi_miso;
-				txn.rx_data[i] = vif_bus.spi_mosi;
+				txn.miso_data[i] = vif_bus.spi_miso;
+				txn.mosi_data[i] = vif_bus.spi_mosi;
 			end
 			txn.txn_id = next_id;
 			next_id = next_id + 1;
 
 			// send to coverage
 			txn_id_cp = txn.txn_id;
-			tx_data_cp = txn.tx_data;
-			rx_match_cp = (txn.rx_data == txn.tx_data);
+			miso_data_cp = txn.miso_data;
+			match_cp = (txn.mosi_data == txn.miso_data);
 			cg_inst.sample();
 
 			// Send data object through the analysis port before cs_n pulled high

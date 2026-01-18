@@ -87,7 +87,7 @@ module spi_master #(
             bit_count    	   <='0;
             shift_reg_tx	   <='0;
             shift_reg_rx	   <='0;
-            hostIF.data_out	   <='0;
+            hostIF.host_in	   <='0;
         end else begin
             case(curr_state)
                 IDLE: begin
@@ -97,10 +97,10 @@ module spi_master #(
                     busIF.spi_cs_n  <= 1; // chip select is disabled
                     busIF.spi_mosi  <='0;
                     bit_count 		<='0;
-                    hostIF.data_out <='0;         
+                    hostIF.host_in <='0;         
                     if (hostIF.start) begin
-                        shift_reg_tx <= hostIF.data_in; // take data in
-                        busIF.spi_mosi <= hostIF.data_in[DATA_LENGTH-1]; 
+                        shift_reg_tx <= hostIF.host_out; // take data in
+                        busIF.spi_mosi <= hostIF.host_out[DATA_LENGTH-1]; 
                         // SPI protocol specifies that the first data bit must be present on MOSI 
                         // before the first rising edge of SCK
                     end
@@ -126,8 +126,8 @@ module spi_master #(
                     busIF.spi_mosi  <='0;
                     bit_count 		<='0;
                     hostIF.done     <= 1;
-                    hostIF.data_out <= shift_reg_rx;
-					//$strobe("MASTER- CPU to master: %h, master to CPU: %h", hostIF.data_in, hostIF.data_out);
+                    hostIF.host_in <= shift_reg_rx;
+					//$strobe("MASTER- CPU to master: %h, master to CPU: %h", hostIF.host_out, hostIF.host_in);
                 end
             endcase
         end 

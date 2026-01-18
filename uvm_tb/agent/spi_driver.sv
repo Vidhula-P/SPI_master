@@ -1,5 +1,5 @@
-// the driver (as host) handles start and data_in
-// the driver (as slave) handles Chip Select and sampling MISO from slave's tx_data set in sequencer
+// the driver (as host) handles start and host_out
+// the driver (as slave) handles Chip Select and sampling MISO from slave's miso_data set in sequencer
 
 class spi_driver extends uvm_driver #(spi_transaction);
   	// Register in factory
@@ -42,10 +42,10 @@ class spi_driver extends uvm_driver #(spi_transaction);
 			vif_host.start 	 <= 1;
 
 			// 2. Drive bits
-			vif_host.data_in = txn.rx_data; // send data as host to master
+			vif_host.host_out = txn.mosi_data; // send data as host to master
 			for (int i = DATA_LENGTH-1; i>=0; i--) begin
 				@(negedge vif_bus.spi_sck); // under mode 0, data is driven on falling edge
-				vif_bus.spi_miso = txn.tx_data[i]; // send data as slave to master
+				vif_bus.spi_miso = txn.miso_data[i]; // send data as slave to master
 			end
 
 			// 3. Deassert CS, start
