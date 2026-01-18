@@ -3,7 +3,7 @@ class host_monitor extends uvm_monitor;
 	`uvm_component_utils (host_monitor)
 
 	// Actual interface object is later obtained by doing a get() call on uvm_config_db
-	virtual spi_host_if vif_host;
+	virtual spi_host_if #(DATA_LENGTH) vif_host;
 
 	uvm_analysis_port  #(spi_transaction) host_analysis_port;
 
@@ -18,7 +18,7 @@ class host_monitor extends uvm_monitor;
 		host_analysis_port = new ("host_analysis_port", this);
 
 		// Get virtual interface handle from the configuration DB
-		if (! uvm_config_db #(virtual spi_host_if) :: get (this, "", "vif_host", vif_host)) begin
+		if (! uvm_config_db #(virtual spi_host_if #(DATA_LENGTH)) :: get (this, "", "vif_host", vif_host)) begin
 			`uvm_error (get_type_name (), "DUT interface not found")
 		end
 	endfunction

@@ -7,7 +7,7 @@ class spi_driver extends uvm_driver #(spi_transaction);
 
   	// Actual interface object is later obtained by doing a get() call on uvm_config_db
   	virtual spi_bus_if vif_bus;
-  	virtual spi_host_if vif_host;
+  	virtual spi_host_if #(DATA_LENGTH) vif_host;
 
   	function new (string name = "spi_driver", uvm_component parent = null);
     	super.new (name, parent);
@@ -15,10 +15,10 @@ class spi_driver extends uvm_driver #(spi_transaction);
 
   	virtual function void build_phase (uvm_phase phase);
   		super.build_phase (phase);
-     	if (! uvm_config_db #(virtual spi_bus_if) :: get (this, "", "vif_bus", vif_bus)) begin
+     	if (! uvm_config_db #(virtual spi_bus_if ) :: get (this, "", "vif_bus", vif_bus)) begin
      		`uvm_fatal (get_type_name (), "Didn't get handle to virtual interface vif_bus")
      	end
-     	if (! uvm_config_db #(virtual spi_host_if) :: get (this, "", "vif_host", vif_host)) begin
+     	if (! uvm_config_db #(virtual spi_host_if #(DATA_LENGTH)) :: get (this, "", "vif_host", vif_host)) begin
      		`uvm_fatal (get_type_name (), "Didn't get handle to virtual interface vif_host")
      	end
 	endfunction

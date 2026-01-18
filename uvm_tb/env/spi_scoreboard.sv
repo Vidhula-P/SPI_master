@@ -47,10 +47,17 @@ class spi_scoreboard extends uvm_scoreboard;
 			slave_val = slave_q.pop_front();
 
 			if (host_val.txn_id > 0) begin
-				if (prev_host_val.tx_data != slave_val.rx_data || prev_host_val.rx_data != prev_slave_val.tx_data)
+				if (prev_host_val.tx_data != slave_val.rx_data || prev_host_val.rx_data != prev_slave_val.tx_data) begin
 					`uvm_error("SPI_MISMACTH", $sformatf("Mismatch between master <-> slave data for transaction number [%0d]", prev_host_val.txn_id))
-				else
+					`uvm_info("SPI_SB", $sformatf("HOST id=%0d tx=%0h rx=%0h | SLAVE id=%0d tx=%0h rx=%0h",
+					      prev_host_val.txn_id, prev_host_val.tx_data, prev_host_val.rx_data,
+					      prev_slave_val.txn_id, prev_slave_val.tx_data, slave_val.rx_data), UVM_MEDIUM)
+					end else begin
 					`uvm_info("SPI_MATCH", $sformatf("Transaction [%0d] passed", prev_host_val.txn_id), UVM_MEDIUM)
+					`uvm_info("SPI_SB", $sformatf("HOST id=%0d tx=%0h rx=%0h | SLAVE id=%0d tx=%0h rx=%0h",
+					      prev_host_val.txn_id, prev_host_val.tx_data, prev_host_val.rx_data,
+					      prev_slave_val.txn_id, prev_slave_val.tx_data, slave_val.rx_data), UVM_MEDIUM)
+					end
 			end
 			// since data received by slave is only received at the end of the cycle, 
 			// it becomes available in time for next cycle

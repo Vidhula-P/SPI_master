@@ -1,7 +1,7 @@
 class spi_test extends uvm_test;
 	`uvm_component_utils(spi_test)
 
-	virtual spi_host_if vif_host;
+	virtual spi_host_if #(DATA_LENGTH) vif_host;
 
 	function new (string name="spi_test", uvm_component parent=null);
 		super.new(name,parent);
@@ -12,9 +12,9 @@ class spi_test extends uvm_test;
 	virtual function void build_phase(uvm_phase phase);
 		super.build_phase(phase);
 		// override base sequence
-		uvm_factory::get().set_type_override_by_type(spi_sequence::get_type(), full_seqs::get_type());
+		uvm_factory::get().set_type_override_by_type(spi_sequence::get_type(), example_seq::get_type());
 		env = spi_env::type_id::create("env", this);
-		if (!uvm_config_db#(virtual spi_host_if)::get(this, "", "vif_host", vif_host))
+		if (!uvm_config_db#(virtual spi_host_if #(DATA_LENGTH))::get(this, "", "vif_host", vif_host))
 			`uvm_fatal(get_type_name(), "vif_host not found")
 	endfunction
 

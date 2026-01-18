@@ -32,23 +32,23 @@ class example_seq extends spi_sequence;
 		int next_id;
 		spi_transaction txn = spi_transaction::type_id::create("txn");
 		`uvm_info("SEQ", "Executing example_seq", UVM_MEDIUM)
-		txn = spi_transaction::type_id::create("txn");
-		start_item(txn);
-		txn.tx_data = 8'he5; 
-		txn.rx_data = 8'haa;
-		finish_item(txn);
-		next_id = 1;
-		txn = spi_transaction::type_id::create("txn");
-		start_item(txn);
-		txn.tx_data = 8'h3f;
-		txn.rx_data = 8'h67;
-		finish_item(txn);
-		next_id = 2;
-		txn = spi_transaction::type_id::create("txn");
-		start_item(txn);
-		txn.tx_data = 8'h88;
-		txn.rx_data = 8'h22;
-		finish_item(txn);
+		repeat (2) begin
+			txn = spi_transaction::type_id::create("txn");
+			start_item(txn);
+			txn.tx_data = 8'he5; 
+			txn.rx_data = 8'haa;
+			finish_item(txn);
+			txn = spi_transaction::type_id::create("txn");
+			start_item(txn);
+			txn.tx_data = 16'h623f;
+			txn.rx_data = 16'hcd67;
+			finish_item(txn);
+			txn = spi_transaction::type_id::create("txn");
+			start_item(txn);
+			txn.tx_data = 32'h88668866;
+			txn.rx_data = 32'h33cc33cc;
+			finish_item(txn);
+		end
 	endtask
 endclass
 
@@ -119,7 +119,7 @@ class all_zeroes extends spi_sequence; //should fail assertion
 	virtual task body();
 		int next_id;
 		spi_transaction txn = spi_transaction::type_id::create("txn");
-		`uvm_info("SEQ", "Executing example_seq", UVM_MEDIUM)
+		`uvm_info("SEQ", "Executing all_zeroes", UVM_MEDIUM)
 		repeat (3) begin
 			txn = spi_transaction::type_id::create("txn");
 			txn.tx_no_zero.constraint_mode(0);

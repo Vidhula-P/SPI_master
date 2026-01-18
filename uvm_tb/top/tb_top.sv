@@ -1,13 +1,11 @@
 module tb_top;
 	import uvm_pkg::*;
 	import spi_pkg::*;
-
-	parameter DATA_LENGTH = 8;
  
 	logic clk;
 
 	// SPI interfaces
-	spi_host_if hostIF(clk);
+	spi_host_if #(DATA_LENGTH) hostIF(clk);
 	spi_bus_if busIF();
 
 	// Instantiate DUT
@@ -29,7 +27,7 @@ module tb_top;
 	// UVM configuration + test start
 	initial begin
 		uvm_config_db#(virtual spi_bus_if)::set(null, "*", "vif_bus", busIF);
-		uvm_config_db#(virtual spi_host_if)::set(null, "*", "vif_host", hostIF);;
+		uvm_config_db#(virtual spi_host_if #(DATA_LENGTH))::set(null, "*", "vif_host", hostIF);;
 		run_test("spi_test");
 	end
 
