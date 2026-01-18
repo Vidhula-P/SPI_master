@@ -20,7 +20,7 @@ class spi_monitor extends uvm_monitor;
 		coverpoint match_cp {
     		bins match[]    = {1};
 			bins mismatch = {0};
-			}
+		}
 	endgroup 
 
 	virtual function void build_phase (uvm_phase phase);
