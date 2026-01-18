@@ -107,7 +107,7 @@ class all_ones extends spi_sequence;
 	endtask
 endclass
 
-class all_zeroes extends spi_sequence; //should fail assertion
+class all_zeroes extends spi_sequence;
 	`uvm_object_utils(all_zeroes)
 
 	function new (string name = "all_zeroes");
@@ -133,14 +133,6 @@ class all_zeroes extends spi_sequence; //should fail assertion
 	endtask
 endclass
 
-class sparse_seq extends spi_sequence;
-	// to be filled
-endclass
-
-class dense_seq extends spi_sequence;
-	// to be filled
-endclass
-
 class alternate_seq extends spi_sequence;
 	`uvm_object_utils(alternate_seq)
 
@@ -158,6 +150,69 @@ class alternate_seq extends spi_sequence;
 	endtask
 endclass
 
+class small_seq extends spi_sequence;
+	`uvm_object_utils(small_seq)
+
+	function new (string name = "small_seq");
+		super.new(name);
+	endfunction
+
+	virtual task body();
+		int next_id;
+		spi_transaction txn = spi_transaction::type_id::create("txn");
+		`uvm_info("SEQ", "Executing small_seq", UVM_MEDIUM)
+		repeat(50) begin  // Send 50 transactions
+			txn = spi_transaction::type_id::create("txn");
+			start_item(txn);
+			assert(txn.randomize() with {txn.miso_data inside {[1: DATA_LENGTH/4]} ;} );
+			finish_item(txn);
+			next_id++;
+		end	
+	endtask
+endclass
+
+class medium_seq extends spi_sequence;
+	`uvm_object_utils(medium_seq)
+
+	function new (string name = "medium_seq");
+		super.new(name);
+	endfunction
+
+	virtual task body();
+		int next_id;
+		spi_transaction txn = spi_transaction::type_id::create("txn");
+		`uvm_info("SEQ", "Executing medium_seq", UVM_MEDIUM)
+		repeat(50) begin  // Send 50 transactions
+			txn = spi_transaction::type_id::create("txn");
+			start_item(txn);
+			assert(txn.randomize() with {txn.miso_data inside { [ (DATA_LENGTH/4) + 1 : 3*DATA_LENGTH/4 ] } ;} );
+			finish_item(txn);
+			next_id++;
+		end	
+	endtask
+endclass
+
+class large_seq extends spi_sequence;
+	`uvm_object_utils(large_seq)
+
+	function new (string name = "large_seq");
+		super.new(name);
+	endfunction
+
+	virtual task body();
+		int next_id;
+		spi_transaction txn = spi_transaction::type_id::create("txn");
+		`uvm_info("SEQ", "Executing large_seq", UVM_MEDIUM)
+		repeat(50) begin  // Send 50 transactions
+			txn = spi_transaction::type_id::create("txn");
+			start_item(txn);
+			assert(txn.randomize() with {txn.miso_data inside { [(3*DATA_LENGTH/4) + 1 : DATA_LENGTH] } ;} );
+			finish_item(txn);
+			next_id++;
+		end	
+	endtask
+endclass
+
 class full_seqs extends spi_sequence;
 	`uvm_object_utils(full_seqs)
 
@@ -171,6 +226,9 @@ class full_seqs extends spi_sequence;
 	all_ones	  all_1_seq;
 	all_zeroes	  all_0_seq;
 	alternate_seq alt_seq;
+	small_seq	  sma_seq;
+	medium_seq	  med_seq;
+	large_seq	  lar_seq;
 
 	virtual task body();
 		`uvm_info("SEQ", "Executing full_seqs", UVM_MEDIUM)
@@ -180,5 +238,8 @@ class full_seqs extends spi_sequence;
 		`uvm_do(all_1_seq)
 		`uvm_do(all_0_seq)
 		`uvm_do(alt_seq)
+		`uvm_do(sma_seq)
+		`uvm_do(med_seq)
+		`uvm_do(lar_seq)
 	endtask
 endclass
