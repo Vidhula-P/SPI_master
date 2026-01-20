@@ -24,6 +24,11 @@ module tb_top;
 		hostIF.rst_n = 1;
 	end
 
+	// set timeout
+	initial begin
+		set_global_timeout(1000ns);
+	end
+
 	// UVM configuration + test start
 	initial begin
 		uvm_config_db#(virtual spi_bus_if)::set(null, "*", "vif_bus", busIF);
